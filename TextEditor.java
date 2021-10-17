@@ -42,31 +42,70 @@ class EditorGUI{
                  }
                  else if(ae.getActionCommand() == "Open"){
                      
-                     try(FileReader fr = new FileReader(path.getText());
-                          BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))){
-                         String toSet = new String();
-                         
-                         
-                         int c = fr.read();
-                         while(c != -1){
-                            toSet+= (char) c;
-                            c = fr.read();
-                            
-
-                         }
-                         bw.write(toSet);
-                         textArea.setText(toSet);
-                         
+                    try(FileReader fr = new FileReader(path.getText());
+                         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))){
+                        String toSet = new String();
                         
+                        
+                        int c = fr.read();
+                        while(c != -1){
+                           toSet+= (char) c;
+                           c = fr.read();
+                           
 
-                     }
-                     catch(FileNotFoundException fe){
-                        path.setText("No SUCH FILE");
+                        }
+                        bw.write(toSet);
+                        textArea.setText(toSet);
+                        
+                       
+
                     }
-                    catch(IOException ioe){
-                        path.setText("An exception occured");
+                    catch(FileNotFoundException fe){
+                       path.setText("No SUCH FILE");
+                   }
+                   catch(IOException ioe){
+                       path.setText("An exception occured");
+                   }
+                }
+                else if(ae.getActionCommand() == "Copy"){
+                    String newPath = JOptionPane.showInputDialog(null, "This is the message", "This is the default text");
+                    try(FileReader fr = new FileReader(path.getText());
+                         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))){
+                        String toSet = new String();
+                        
+                        
+                        int c = fr.read();
+                        while(c != -1){
+                           toSet+= (char) c;
+                           c = fr.read();
+                           
+
+                        }
+                        bw.write(toSet);
+                        textArea.setText(toSet);
+
+                        try(FileWriter fout = new FileWriter(newPath)){
+                            fout.write(textArea.getText());
+                            fout.close();
+                            path.setText(newPath);
+                        }
+                        catch(FileNotFoundException fe){
+                            path.setText("No SUCH FILE");
+                        }
+                        catch(IOException ioe){
+                            path.setText("An exception occured");
+                        }
+                        
+                       
+
                     }
-                 }
+                    catch(FileNotFoundException fe){
+                       path.setText("No SUCH FILE");
+                   }
+                   catch(IOException ioe){
+                       path.setText("An exception occured");
+                   }
+                }
             }
 
         }
@@ -76,6 +115,7 @@ class EditorGUI{
 
         save.addActionListener(doesSomething);
         open.addActionListener(doesSomething);
+        copy.addActionListener(doesSomething);
 
       
 
